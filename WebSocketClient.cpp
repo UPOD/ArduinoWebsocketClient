@@ -48,14 +48,20 @@ PROGMEM const char *WebSocketClientStringTable[] =
 };
 
 #ifdef WIFLY
-WebSocketClient::WebSocketClient(WiFlySerial &WiFly) : _client(WiFly) {
-}
+//WebSocketClient::WebSocketClient(WiFly &WiFly) : _client(WiFly) {
+//}
 
-WebSocketClient::WebSocketClient(const char *ssid, const char *password) : _client(ssid, password) {
+WebSocketClient::WebSocketClient(const char *hostname, int port) : _client(hostname,port){
+    _hostname = hostname;
+    _port = port;
+    
 }
-
-WebSocketClient::WebSocketClient(int rxPin, int txPin, const char *ssid, const char *password) : _client(rxPin, txPin, ssid, password) {
-}
+//
+//WebSocketClient::WebSocketClient(const char *hostname, const char *password) : _client(ssid, password) {
+//}
+//
+//WebSocketClient::WebSocketClient(int rxPin, int txPin, const char *ssid, const char *password) : _client(rxPin, txPin, ssid, password) {
+//}
 #endif
 
 
@@ -69,8 +75,8 @@ String WebSocketClient::getStringTableItem(int index) {
 bool WebSocketClient::connect(const char *hostname, const char *path, int port) {
     bool result = false;
 
-    if (_client.connect(hostname, port)) {
-        sendHandshake(hostname, path);
+    if (_client.connect() {
+        sendHandshake();
         result = readHandshake();
     }
 
@@ -120,8 +126,8 @@ void WebSocketClient::sendHandshake(const char *hostname, const char *path) {
     String line4 = getStringTableItem(4);
     String line5 = getStringTableItem(5);
 
-    line1.replace(stringVar, path);
-    line4.replace(stringVar, hostname);
+    line1.replace(stringVar, "/");
+    line4.replace(stringVar, _hostname);
 
     _client.println(line1);
     _client.println(line2);

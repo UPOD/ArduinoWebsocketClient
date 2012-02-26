@@ -34,8 +34,7 @@
 
 
 #ifdef WIFLY
-#include "WiFlyClient.h"
-#include <WiFlySerial.h>
+#include <WiFly.h>
 #else
 #include <Ethernet.h>
 #endif
@@ -47,9 +46,10 @@ class WebSocketClient {
     public:
 
 #ifdef WIFLY
-        WebSocketClient(WiFlySerial &WiFly);
-        WebSocketClient(const char *ssid, const char *password);
-        WebSocketClient(int rxPin, int txPin, const char *ssid, const char *password);
+        //WebSocketClient(WiFlyClient &WiFly);
+        //WebSocketClient(const char *ssid, const char *password);
+        //WebSocketClient(int rxPin, int txPin, const char *ssid, const char *password);
+        WebSocketClient(const char *hostname, int port = 80));
 #else
         WebSocketClient();
 #endif
@@ -77,6 +77,8 @@ class WebSocketClient {
         String getStringTableItem(int index);
         void sendHandshake(const char *hostname, const char *path);
         Print* pDebugChannel;
+        const char *_hostname;
+        int _port
 
 
 #ifndef WIFLY
