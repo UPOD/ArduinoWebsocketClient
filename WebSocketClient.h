@@ -49,13 +49,13 @@ class WebSocketClient {
         //WebSocketClient(WiFlyClient &WiFly);
         //WebSocketClient(const char *ssid, const char *password);
         //WebSocketClient(int rxPin, int txPin, const char *ssid, const char *password);
-        WebSocketClient(const char *hostname, int port = 80));
+        WebSocketClient(const char *hostname, int port = 80);
 #else
         WebSocketClient();
 #endif
 
         typedef void (*DataArrivedDelegate)(WebSocketClient client, String data);
-        bool connect(const char *hostname, const char *path = "/", int port = 80);
+        bool connect();
         bool connected();
         void disconnect();
         void monitor();
@@ -75,10 +75,10 @@ class WebSocketClient {
     private:
 
         String getStringTableItem(int index);
-        void sendHandshake(const char *hostname, const char *path);
+        void sendHandshake();
         Print* pDebugChannel;
         const char *_hostname;
-        int _port
+        int _port;
 
 
 #ifndef WIFLY

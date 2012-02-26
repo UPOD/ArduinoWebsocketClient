@@ -26,7 +26,7 @@
 #include <WString.h>
 #include <string.h>
 #include <stdlib.h>
-#include "WiFlyClient.h"
+//#include "WiFlyClient.h"
 
 prog_char stringVar[] PROGMEM = "{0}";
 prog_char clientHandshakeLine1[] PROGMEM = "GET {0} HTTP/1.1";
@@ -54,7 +54,6 @@ PROGMEM const char *WebSocketClientStringTable[] =
 WebSocketClient::WebSocketClient(const char *hostname, int port) : _client(hostname,port){
     _hostname = hostname;
     _port = port;
-    
 }
 //
 //WebSocketClient::WebSocketClient(const char *hostname, const char *password) : _client(ssid, password) {
@@ -72,12 +71,13 @@ String WebSocketClient::getStringTableItem(int index) {
 }
 
 
-bool WebSocketClient::connect(const char *hostname, const char *path, int port) {
+bool WebSocketClient::connect() {
     bool result = false;
 
-    if (_client.connect() {
+    if (_client.connect()){
         sendHandshake();
         result = readHandshake();
+	//result = true;
     }
 
 	return result;
@@ -118,7 +118,7 @@ void WebSocketClient::setDataArrivedDelegate(DataArrivedDelegate dataArrivedDele
 }
 
 
-void WebSocketClient::sendHandshake(const char *hostname, const char *path) {
+void WebSocketClient::sendHandshake() {
     String stringVar = getStringTableItem(0);
     String line1 = getStringTableItem(1);
     String line2 = getStringTableItem(2);
@@ -191,13 +191,13 @@ void WebSocketClient::send (String data) {
 void WebSocketClient::setDebugChannel(Print* pChannel) {
     pDebugChannel = pChannel;
 #ifdef WIFLY
-    _client.setDebugChannel(pChannel);
+    //_client.setDebugChannel(pChannel);
 #endif
 }
 void WebSocketClient::clearDebugChannel() {
     pDebugChannel = NULL;
 #ifdef WIFLY
-    _client.clearDebugChannel();
+    //_client.clearDebugChannel();
 #endif
 }
 
